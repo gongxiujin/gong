@@ -23,3 +23,6 @@ class DefaultConfig(object):
     REAUTH_VIEW = "auth.reauth"
     LOGIN_MESSAGE_CATEGORY = "error"
     SECRET_KEY = '470cd86a9656c3e12afca890df438a22'
+
+    # url_blue_point
+    AUTH_URL = '/gong'
