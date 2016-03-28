@@ -13,7 +13,7 @@ class DefaultConfig(object):
     INFO_LOG = 'access.log'
     ERROR_LOG = 'error.log'
 
-    SQLALCHEMY_URI = "mysql://root:aima@localhost:3306/gong_db?charset=utf8mb4"
+    SQLALCHEMY_DATABASE_URI = "mysql://root:aima@localhost:3306/gong_db?charset=utf8mb4"
 
     SQLALCHEMY_ECHO = False
 
@@ -26,3 +26,5 @@ class DefaultConfig(object):
 
     # url_blue_point
     AUTH_URL = '/gong'
+
+    SQLALCHEMY_TRACK_MODIFICATIONS = False

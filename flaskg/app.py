@@ -10,6 +10,7 @@ def create_app(config=None):
     bootstrap.init_app(app)
     register_buleprint(app)
     error_hander(app)
+    configure_extensions(app)
     configure_logging(app)
     return app
 
@@ -34,6 +35,10 @@ def error_hander(app):
 
 def register_buleprint(app):
     app.register_blueprint(auth, url_prefix=app.config["AUTH_URL"])
+
+def configure_extensions(app):
+    db.init_app(app)
+    login_manager.init_app(app)
 
 def configure_logging(app):
     """Configures logging."""
