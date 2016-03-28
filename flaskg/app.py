@@ -1,6 +1,7 @@
 from flaskg.extensions import db, login_manager, bootstrap
 from flask import Flask, render_template
 from flaskg.auth.view import auth
+import os, logging
 
 def create_app(config=None):
     app = Flask(__name__)
@@ -9,6 +10,7 @@ def create_app(config=None):
     bootstrap.init_app(app)
     register_buleprint(app)
     error_hander(app)
+    configure_logging(app)
     return app
 
 
@@ -32,3 +34,31 @@ def error_hander(app):
 
 def register_buleprint(app):
     app.register_blueprint(auth, url_prefix=app.config["AUTH_URL"])
+
+def configure_logging(app):
+    """Configures logging."""
+
+    logs_folder = os.path.join(app.root_path, os.pardir, "logs")
+    from logging.handlers import SMTPHandler
+
+    pid_string = str(os.getpid())
+
+    formatter = logging.Formatter(
+        '%(asctime)s %(levelname)s: %(message)s '
+        '[in %(pathname)s:%(lineno)d]')
+
+    info_log = os.path.join(logs_folder, app.config['INFO_LOG'] + '.' + pid_string)
+
+    info_file_handler = logging.handlers.TimedRotatingFileHandler(info_log)
+
+    info_file_handler.setLevel(logging.INFO)
+    info_file_handler.setFormatter(formatter)
+    app.logger.addHandler(info_file_handler)
+
+    error_log = os.path.join(logs_folder, app.config['ERROR_LOG'] + '.' + pid_string)
+
+    error_file_handler = logging.handlers.TimedRotatingFileHandler(error_log)
+
+    error_file_handler.setLevel(logging.ERROR)
+    error_file_handler.setFormatter(formatter)
+    app.logger.addHandler(error_file_handler)
