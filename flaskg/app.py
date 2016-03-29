@@ -1,7 +1,8 @@
-from flaskg.extensions import db, login_manager, bootstrap
+from flaskg.extensions import db, login_manager, bootstrap, migrate
 from flask import Flask, render_template
 from flaskg.auth.view import auth
 import os, logging
+
 
 def create_app(config=None):
     app = Flask(__name__)
@@ -39,6 +40,7 @@ def register_buleprint(app):
 def configure_extensions(app):
     db.init_app(app)
     login_manager.init_app(app)
+    migrate.init_app(app, db)
 
 def configure_logging(app):
     """Configures logging."""
